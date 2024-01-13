@@ -1,0 +1,89 @@
+version: '3.8'
+
+services:
+  ws-scylla-1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: scylla:local
+    container_name: ws-scylla-1
+    hostname: ws-scylla
+    command: --smp 1
+    ports:
+      - 9040:9042
+    expose:
+      - 7199
+    networks:
+      - ws-scylla
+    volumes:
+      - scylla-1:/var/lib/scylla
+    healthcheck:
+      test: ["CMD-SHELL", "nodetool statusgossip | grep -q 'running'"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+  ws-scylla-2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: scylla:local
+    container_name: ws-scylla-2
+    hostname: ws-scylla
+    command: --smp 1 --seeds=ws-scylla-1
+    ports:
+      - 9041:9042
+    expose:
+      - 7199
+    networks:
+      - ws-scylla
+    volumes:
+      - scylla-2:/var/lib/scylla
+    healthcheck:
+      test: ["CMD-SHELL", "nodetool statusgossip | grep -q 'running'"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      ws-scylla-1:
+        condition: service_healthy
+  ws-scylla-3:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: scylla:local
+    container_name: ws-scylla-3
+    hostname: ws-scylla
+    command: --smp 1 --seeds=ws-scylla-1
+    ports:
+      - 9042:9042
+    expose:
+      - 7199
+    networks:
+      - ws-scylla
+    volumes:
+      - scylla-3:/var/lib/scylla
+    healthcheck:
+      test: ["CMD-SHELL", "nodetool statusgossip | grep -q 'running'"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      ws-scylla-1:
+        condition: service_healthy
+volumes:
+  scylla-1:
+    name: scylla-1
+  scylla-2:
+    name: scylla-2
+  scylla-3:
+    name: scylla-3
+networks:
+  ws-scylla:
+    name: ws-scylla
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.10.5.0/24
+          gateway: 10.10.5.1
+    driver_opts:
+      com.docker.network.bridge.name: ws-scylla
