@@ -2,13 +2,12 @@ version: '3.8'
 
 services:
   ws-scylla-1:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: scylla:local
+    image: scylladb/scylla:5.4.1
     container_name: ws-scylla-1
-    hostname: ws-scylla
     command: --smp 1
+    environment:
+      - "SCYLLA_JMX_ADDR=-ja 0.0.0.0"
+      - "SCYLLA_JMX_REMOTE=-r"
     ports:
       - 9040:9042
     expose:
@@ -23,13 +22,12 @@ services:
       timeout: 5s
       retries: 3
   ws-scylla-2:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: scylla:local
+    image: scylladb/scylla:5.4.1
     container_name: ws-scylla-2
-    hostname: ws-scylla
     command: --smp 1 --seeds=ws-scylla-1
+    environment:
+      - "SCYLLA_JMX_ADDR=-ja 0.0.0.0"
+      - "SCYLLA_JMX_REMOTE=-r"
     ports:
       - 9041:9042
     expose:
@@ -47,13 +45,12 @@ services:
       ws-scylla-1:
         condition: service_healthy
   ws-scylla-3:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: scylla:local
+    image: scylladb/scylla:5.4.1
     container_name: ws-scylla-3
-    hostname: ws-scylla
     command: --smp 1 --seeds=ws-scylla-1
+    environment:
+      - "SCYLLA_JMX_ADDR=-ja 0.0.0.0"
+      - "SCYLLA_JMX_REMOTE=-r"
     ports:
       - 9042:9042
     expose:
