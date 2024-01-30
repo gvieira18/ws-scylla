@@ -47,18 +47,12 @@ docker compose down
 
 > Stopping the cluster, removing containers and volumes
 
-> [!DANGER]
+> [!CAUTION]
 > Removing the volume also means removing any information stored in the database, so proceed with caution and make a backup if necessary.
 
 ```bash
 docker compose down --volumes # or docker compose down -v
 ```
-
-## TODO
-
-- [ ] Acessing database
-- [ ] Backup and restore
-- [ ] Troubleshooting
 
 ## License
 
