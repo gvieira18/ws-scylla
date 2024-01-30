@@ -19,19 +19,36 @@ Before you begin, ensure you have the following installed on your system:
 git clone https://github.com/gvieira18/ws-scylla.git
 ```
 
-2. Configure ScyllaDB settings (optional):
+2. Configure ScyllaDB settings:
 
-Modify the `docker-compose.yml` file to customize ScyllaDB settings such as port mappings, volume mounts, etc.
+   - Before starting the cluster, ensure the [aio-max-nr](https://www.kernel.org/doc/Documentation/sysctl/fs.txt) value is high enough (`1048576` or more) with the command bellow, usually it will return something around `65k`.
+     ```bash
+     cat /proc/sys/fs/aio-max-nr
+     ```
+   - If necessary adjust the value with the following command bellow and check the aio-max-nr value again.
+     ```bash
+     echo fs.aio-max-nr=1048576 | sudo tee /etc/sysctl.d/41-aio_max_nr.conf && sudo sysctl --system
+     ```
+     > 📝 This command will add a file inside the `/etc/sysctl.d` folder to be loaded along with the environment on start-up
+   - [Opcional] Modify the `docker-compose.yml` file to customize ScyllaDB settings such as port mappings, volume mounts, network, etc.
 
 3. Start the ScyllaDB container:
 
-> This command will pull the ScyllaDB Docker image (if not already downloaded) and start the container in the background.
+- This command will pull the ScyllaDB Docker image (if not already downloaded) and start the container in the background.
 
 ```bash
 docker compose up --detach # or docker compose up -d
 ```
 
 ## Maintenance
+
+### Accessing the database
+
+TODO
+
+### Backup and restore the database
+
+TODO
 
 ### Stop and remove cluster/container
 
