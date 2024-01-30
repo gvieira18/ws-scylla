@@ -33,24 +33,23 @@ docker compose up --detach # or docker compose up -d
 
 ## Maintenance
 
-> Just stopping the cluster
+### Stop and remove cluster/container
 
 ```bash
+# Just stopping the cluster
 docker compose stop
 ```
 
-> Stopping the cluster and removing the containers
-
 ```bash
+# Stopping the cluster and removing the containers
 docker compose down
 ```
-
-> Stopping the cluster, removing containers and volumes
 
 > [!CAUTION]
 > Removing the volume also means removing any information stored in the database, so proceed with caution and make a backup if necessary.
 
 ```bash
+# Stopping the cluster, removing containers and volumes
 docker compose down --volumes # or docker compose down -v
 ```
 
