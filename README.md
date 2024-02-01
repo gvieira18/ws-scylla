@@ -28,7 +28,7 @@ git clone https://github.com/gvieira18/ws-scylla.git
      ```bash
      echo fs.aio-max-nr=1048576 | sudo tee /etc/sysctl.d/41-aio_max_nr.conf && sudo sysctl --system
      ```
-     > [!NOTE] This command adds a file inside the `/etc/sysctl.d` folder for startup loading.
+     > 📝 This command adds a file inside the `/etc/sysctl.d` folder for startup loading.
    - [Optional] Modify the `docker-compose.yml` file to customize ScyllaDB settings, such as port mappings, volume mounts, and network configurations.
 
 3. **Start the ScyllaDB container:**
