@@ -123,10 +123,6 @@ Access via Datagrip, which belongs to IntelliJ, follows the JDBC standard. You c
 URL="jdbc:cassandra://localhost:9040,localhost:9041,localhost:9042/system"
 ```
 
-#### Backup and Restore the Database
-
-TODO
-
 #### Stop and Remove Cluster/Container
 
 - **Stop the Cluster:**
@@ -147,6 +143,13 @@ docker compose down
 ```bash
 docker compose down --volumes # or docker compose down -v
 ```
+
+### References
+
+- [ScyllaDB - DockerHub](https://hub.docker.com/r/scylladb/scylla)
+- [ScyllaDB - University](https://university.scylladb.com/courses/scylla-essentials-overview/lessons/high-availability/topic/consistency-level-demo-part-1)
+- [ScyllaDB - CarePet PHP example](https://github.com/scylladb/care-pet/blob/master/php/README.md)
+- [Reflective Thoughts from a Unforgotten Past](https://gist.github.com/gvieira18/df11b9517eff971d748e82bf23a16d47)
 
 ### License
 
