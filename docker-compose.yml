@@ -1,7 +1,7 @@
 version: "3.8"
 
 services:
-  ws-scylla-1:
+  ws-scylla-1: &scylla-main
     image: scylladb/scylla:5.4.1
     container_name: ws-scylla-1
     command: ["--smp=1", "--overprovisioned=1", "--developer-mode=1"]
@@ -21,8 +21,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
-  ws-scylla-2:
-    image: scylladb/scylla:5.4.1
+  ws-scylla-2: &scylla-replica
+    <<: *scylla-main
     container_name: ws-scylla-2
     command:
       [
@@ -31,54 +31,20 @@ services:
         "--developer-mode=1",
         "--seeds=ws-scylla-1",
       ]
-    environment:
-      - "SCYLLA_JMX_ADDR=-ja 0.0.0.0"
-      - "SCYLLA_JMX_REMOTE=-r"
     ports:
       - 9041:9042
-    expose:
-      - 7199
-    networks:
-      - ws-scylla
     volumes:
       - scylla-2:/var/lib/scylla
-    healthcheck:
-      test: ["CMD-SHELL", "nodetool statusgossip | grep -q 'running'"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
     depends_on:
       ws-scylla-1:
         condition: service_healthy
   ws-scylla-3:
-    image: scylladb/scylla:5.4.1
+    <<: *scylla-replica
     container_name: ws-scylla-3
-    command:
-      [
-        "--smp=1",
-        "--overprovisioned=1",
-        "--developer-mode=1",
-        "--seeds=ws-scylla-1",
-      ]
-    environment:
-      - "SCYLLA_JMX_ADDR=-ja 0.0.0.0"
-      - "SCYLLA_JMX_REMOTE=-r"
     ports:
       - 9042:9042
-    expose:
-      - 7199
-    networks:
-      - ws-scylla
     volumes:
       - scylla-3:/var/lib/scylla
-    healthcheck:
-      test: ["CMD-SHELL", "nodetool statusgossip | grep -q 'running'"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-    depends_on:
-      ws-scylla-1:
-        condition: service_healthy
 volumes:
   scylla-1:
     name: scylla-1
