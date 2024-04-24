@@ -83,11 +83,11 @@ networks:
 
 After starting the custom service, it registers within the `ws-scylla` network. The ScyllaDB configuration already defines default ports for access.
 
-| Service Name |    Host     | Port |
-| ------------ | :---------: | :--: |
-| ws-scylla-1  | ws-scylla-1 | 9042 |
-| ws-scylla-2  | ws-scylla-2 | 9042 |
-| ws-scylla-3  | ws-scylla-3 | 9042 |
+| Service Name |    Host     | Port  |
+| ------------ | :---------: | :---: |
+| ws-scylla-1  | ws-scylla-1 | 9042  |
+| ws-scylla-2  | ws-scylla-2 | 9042  |
+| ws-scylla-3  | ws-scylla-3 | 9042  |
 
 ```js
 const client = new cassandra.Client({
@@ -101,11 +101,11 @@ const client = new cassandra.Client({
 
 The default `docker-compose.yml` file enables the following ports for external access to the DBMS/SGDB or directly to the database driver:
 
-| Service Name |   Host    | Port |
-| ------------ | :-------: | :--: |
-| ws-scylla-1  | localhost | 9040 |
-| ws-scylla-2  | localhost | 9041 |
-| ws-scylla-3  | localhost | 9042 |
+| Service Name |   Host    | Port  |
+| ------------ | :-------: | :---: |
+| ws-scylla-1  | localhost | 9040  |
+| ws-scylla-2  | localhost | 9041  |
+| ws-scylla-3  | localhost | 9042  |
 
 Using the same example from internal access:
 
@@ -150,6 +150,7 @@ docker compose down --volumes # or docker compose down -v
 - [ScyllaDB - University](https://university.scylladb.com/courses/scylla-essentials-overview/lessons/high-availability/topic/consistency-level-demo-part-1)
 - [ScyllaDB - CarePet PHP example](https://github.com/scylladb/care-pet/blob/master/php/README.md)
 - [Reflective Thoughts from a Unforgotten Past](https://gist.github.com/gvieira18/df11b9517eff971d748e82bf23a16d47)
+- [fee-mendes/workshop-demo](https://github.com/fee-mendes/workshop-demo)
 
 ### License
 
