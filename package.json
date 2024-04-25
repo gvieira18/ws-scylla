@@ -1,0 +1,16 @@
+{
+  "name": "ws-scylla",
+  "version": "1.0.0",
+  "main": "index.js",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "dc:multi": "docker compose --file network.yml --file docker-compose.dc1.yml --file docker-compose.dc2.yml",
+    "dc:multi:start": "npm run dc:multi -- up",
+    "dc:multi:stop": "npm run dc:multi -- stop",
+    "dc:multi:stats": "npm run dc:multi -- stats",
+    "dc:multi:down": "npm run dc:multi -- down --volumes",
+    "dc:multi:dc1:status": "npm run dc:multi -- exec scylla-cluster1-node1 nodetool status",
+    "dc:multi:dc2:status": "npm run dc:multi -- exec scylla-cluster2-node1 nodetool status"
+  }
+}

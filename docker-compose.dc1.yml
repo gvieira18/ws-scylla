@@ -1,0 +1,62 @@
+services:
+  scylla-cluster1-node1: &cluster1
+    image: scylladb/scylla:5.4.6
+    container_name: scylla-cluster1-node1
+    environment:
+      - 'SCYLLA_JMX_ADDR=-ja 0.0.0.0'
+      - 'SCYLLA_JMX_REMOTE=-r'
+    expose:
+      - 7199
+    command:
+      [
+        '--smp=2',
+        '--memory=2G',
+        '--overprovisioned=1',
+        '--api-address=0.0.0.0',
+        '--seeds=scylla-cluster1-node1,scylla-cluster2-node1',
+      ]
+    ports:
+      - 9040:9042
+    networks:
+      scylla-dc:
+        ipv4_address: 10.10.7.2
+    volumes:
+      - ./conf/scylla.yaml:/etc/scylla/scylla.yaml:rw
+      - ./conf/rackdc1.properties:/etc/scylla/cassandra-rackdc.properties:rw
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          "curl -s -X GET --header 'Accept: application/json' 'http://localhost:10000/storage_service/native_transport'",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+  scylla-cluster1-node2: &cluster1-replica
+    <<: *cluster1
+    container_name: scylla-cluster1-node2
+    ports: []
+    networks:
+      scylla-dc:
+        ipv4_address: 10.10.7.3
+    depends_on:
+      scylla-cluster1-node1:
+        condition: service_healthy
+  scylla-cluster1-node3:
+    <<: *cluster1-replica
+    container_name: scylla-cluster1-node3
+    networks:
+      scylla-dc:
+        ipv4_address: 10.10.7.4
+  scylla-cluster1-node4:
+    <<: *cluster1-replica
+    container_name: scylla-cluster1-node4
+    networks:
+      scylla-dc:
+        ipv4_address: 10.10.7.5
+  scylla-cluster1-node5:
+    <<: *cluster1-replica
+    container_name: scylla-cluster1-node5
+    networks:
+      scylla-dc:
+        ipv4_address: 10.10.7.6
