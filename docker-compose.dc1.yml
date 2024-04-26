@@ -1,7 +1,11 @@
 services:
-  scylla-cluster1-node1: &cluster1
-    image: scylladb/scylla:5.4.6
-    container_name: scylla-cluster1-node1
+  scylla-dc1-node1: &node-main
+    image: scylladb/scylla-agent:local
+    container_name: scylla-dc1-node1
+    restart: on-failure
+    build:
+      context: .
+      dockerfile: Dockerfile
     environment:
       - 'SCYLLA_JMX_ADDR=-ja 0.0.0.0'
       - 'SCYLLA_JMX_REMOTE=-r'
@@ -13,10 +17,10 @@ services:
         '--memory=2G',
         '--overprovisioned=1',
         '--api-address=0.0.0.0',
-        '--seeds=scylla-cluster1-node1,scylla-cluster2-node1',
+        '--seeds=scylla-dc1-node1,scylla-dc2-node1',
       ]
     ports:
-      - 9040:9042
+      - 9042:9042
     networks:
       scylla-dc:
         ipv4_address: 10.10.7.2
@@ -32,31 +36,27 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
-  scylla-cluster1-node2: &cluster1-replica
-    <<: *cluster1
-    container_name: scylla-cluster1-node2
-    ports: []
+
+  scylla-dc1-node2: &node-replica
+    <<: *node-main
+    container_name: scylla-dc1-node2
+    ports:
+      - 9043:9042
     networks:
       scylla-dc:
         ipv4_address: 10.10.7.3
     depends_on:
-      scylla-cluster1-node1:
+      scylla-dc1-node1:
         condition: service_healthy
-  scylla-cluster1-node3:
-    <<: *cluster1-replica
-    container_name: scylla-cluster1-node3
+
+  scylla-dc1-node3:
+    <<: *node-replica
+    container_name: scylla-dc1-node3
+    ports:
+      - 9044:9042
     networks:
       scylla-dc:
         ipv4_address: 10.10.7.4
-  scylla-cluster1-node4:
-    <<: *cluster1-replica
-    container_name: scylla-cluster1-node4
-    networks:
-      scylla-dc:
-        ipv4_address: 10.10.7.5
-  scylla-cluster1-node5:
-    <<: *cluster1-replica
-    container_name: scylla-cluster1-node5
-    networks:
-      scylla-dc:
-        ipv4_address: 10.10.7.6
+    depends_on:
+      scylla-dc1-node2:
+        condition: service_healthy

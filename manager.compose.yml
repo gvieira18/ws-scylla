@@ -1,0 +1,41 @@
+services:
+  scylla-manager:
+    image: scylladb/scylla-manager:3.2.7
+    container_name: scylla-manager
+    networks:
+      scylla-dc:
+        ipv4_address: 10.10.7.9
+    depends_on:
+      scylla-manager-db:
+        condition: service_healthy
+
+  scylla-manager-db:
+    image: scylladb/scylla:5.4.6
+    container_name: scylla-manager-db
+    command: ["--smp=1", "--memory=1G"]
+    networks:
+      scylla-dc:
+        ipv4_address: 10.10.7.8
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -s -X GET --header 'Accept: application/json' 'http://localhost:10000/storage_service/native_transport'",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  minio:
+    # Versionamento bugado
+    image: minio/minio:RELEASE.2024-04-18T19-09-19Z
+    container_name: minio
+    networks:
+      scylla-dc:
+        ipv4_address: 10.10.7.10
+    ports:
+      - "9000:9000"
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123
+    command: server /data

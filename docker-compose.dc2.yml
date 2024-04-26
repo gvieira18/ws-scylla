@@ -1,7 +1,11 @@
 services:
-  scylla-cluster2-node1: &cluster2
-    image: scylladb/scylla:5.4.6
-    container_name: scylla-cluster2-node1
+  scylla-dc2-node1: &node-main
+    image: scylladb/scylla-agent:local
+    container_name: scylla-dc2-node1
+    restart: on-failure
+    build:
+      context: .
+      dockerfile: Dockerfile
     environment:
       - 'SCYLLA_JMX_ADDR=-ja 0.0.0.0'
       - 'SCYLLA_JMX_REMOTE=-r'
@@ -13,13 +17,13 @@ services:
         '--memory=2G',
         '--overprovisioned=1',
         '--api-address=0.0.0.0',
-        '--seeds=scylla-cluster1-node1,scylla-cluster2-node1',
+        '--seeds=scylla-dc1-node1,scylla-dc2-node1',
       ]
     ports:
-      - 9041:9042
+      - 9045:9042
     networks:
       scylla-dc:
-        ipv4_address: 10.10.7.7
+        ipv4_address: 10.10.7.5
     volumes:
       - ./conf/scylla.yaml:/etc/scylla/scylla.yaml:rw
       - ./conf/rackdc2.properties:/etc/scylla/cassandra-rackdc.properties:rw
@@ -32,31 +36,27 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
-  scylla-cluster2-node2: &cluster2-replica
-    <<: *cluster2
-    container_name: scylla-cluster2-node2
-    ports: []
+
+  scylla-dc2-node2: &node-replica
+    <<: *node-main
+    container_name: scylla-dc2-node2
+    ports:
+      - 9046:9042
     networks:
       scylla-dc:
-        ipv4_address: 10.10.7.8
+        ipv4_address: 10.10.7.6
     depends_on:
-      scylla-cluster2-node1:
+      scylla-dc2-node1:
         condition: service_healthy
-  scylla-cluster2-node3:
-    <<: *cluster2-replica
-    container_name: scylla-cluster2-node3
+
+  scylla-dc2-node3:
+    <<: *node-replica
+    container_name: scylla-dc2-node3
+    ports:
+      - 9047:9042
     networks:
       scylla-dc:
-        ipv4_address: 10.10.7.9
-  scylla-cluster2-node4:
-    <<: *cluster2-replica
-    container_name: scylla-cluster2-node4
-    networks:
-      scylla-dc:
-        ipv4_address: 10.10.7.10
-  scylla-cluster2-node5:
-    <<: *cluster2-replica
-    container_name: scylla-cluster2-node5
-    networks:
-      scylla-dc:
-        ipv4_address: 10.10.7.11
+        ipv4_address: 10.10.7.7
+    depends_on:
+      scylla-dc2-node2:
+        condition: service_healthy
