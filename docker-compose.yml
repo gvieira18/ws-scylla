@@ -15,14 +15,11 @@ services:
     volumes:
       - scylla-1:/var/lib/scylla
     healthcheck:
-      test:
-        [
-          'CMD-SHELL',
-          "curl -s -X GET --header 'Accept: application/json' 'http://localhost:10000/storage_service/native_transport'",
-        ]
-      interval: 30s
-      timeout: 10s
-      retries: 5
+      test: ['CMD-SHELL', 'cqlsh -e "SHOW VERSION" || exit 1']
+      interval: 15s
+      timeout: 30s
+      retries: 15
+      start_period: 30s
   ws-scylla-2: &scylla-replica
     <<: *scylla-main
     container_name: ws-scylla-2
@@ -41,6 +38,9 @@ services:
       - 9042:9042
     volumes:
       - scylla-3:/var/lib/scylla
+    depends_on:
+      ws-scylla-2:
+        condition: service_healthy
 volumes:
   scylla-1:
     name: scylla-1

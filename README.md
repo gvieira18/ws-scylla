@@ -151,6 +151,7 @@ docker compose down --volumes # or docker compose down -v
 - [ScyllaDB - CarePet PHP example](https://github.com/scylladb/care-pet/blob/master/php/README.md)
 - [Reflective Thoughts from a Unforgotten Past](https://gist.github.com/gvieira18/df11b9517eff971d748e82bf23a16d47)
 - [fee-mendes/workshop-demo](https://github.com/fee-mendes/workshop-demo)
+- [tzach/docker-compose.yml](https://gist.github.com/tzach/4d2c2485945465459e3c74cc5d42d949)
 
 ### License
 
