@@ -23,3 +23,4 @@ exclude_patterns = []
 
 html_theme = 'alabaster'
 html_static_path = ['_static']
+html_baseurl = 'https://gvieira18.github.io/ws-scylla/'
