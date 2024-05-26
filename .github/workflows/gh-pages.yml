@@ -25,12 +25,14 @@ jobs:
       - name: Build the docs
         run: |
           make html
-      - name: Upload artifacts
-        # https://github.com/actions/upload-artifact
-        uses: actions/upload-artifact@v4
+      - name: Upload GitHub Pages artifact
+        # https://github.com/actions/upload-pages-artifact
+        uses: actions/upload-pages-artifact@v3
         with:
           name: github-pages
           path: build/html/
+          retention-days: 1
+
   deploy:
     needs: build
     permissions:
