@@ -3,8 +3,11 @@ name: Deploy Sphinx Docs to GitHub Pages
 on:
   push:
     branches:
-      - main
+      - develop
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   deploy:
@@ -34,3 +37,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: ./build/html
+          force_orphan: true
