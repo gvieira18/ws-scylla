@@ -7,14 +7,13 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'ws-scylla'
-copyright = '2024, Vieira'
-author = 'Vieira'
+copyright = '2024, Gabriel do Carmo Vieira'
+author = 'Gabriel do Carmo Vieira'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = []
-
 templates_path = ['_templates']
 exclude_patterns = []
 

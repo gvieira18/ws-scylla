@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - develop
+    paths:
+      - 'docs/**'
   workflow_dispatch:
 
 jobs:
@@ -20,19 +22,17 @@ jobs:
           python-version: '3.10'
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          make --directory docs install
       - name: Build the docs
         run: |
-          make html
+          make --directory docs dirhtml
       - name: Upload GitHub Pages artifact
         # https://github.com/actions/upload-pages-artifact
         uses: actions/upload-pages-artifact@v3
         with:
           name: github-pages
-          path: build/html/
+          path: docs/build/dirhtml/
           retention-days: 1
-
   deploy:
     needs: build
     permissions:
