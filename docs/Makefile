@@ -17,6 +17,14 @@ help:
 install:
 	pip install -r requirements.txt
 
+.PHONY: preview
+preview:
+	@$(PYTHON) -m http.server --directory $(BUILDDIR)/dirhtml 3000
+
+.PHONY: build
+build:
+	@$(SPHINXBUILD) -M dirhtml "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+
 # Route all unknown targets to Sphinx using the new "make mode" option
 .PHONY: Makefile
 %: Makefile

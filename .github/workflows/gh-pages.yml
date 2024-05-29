@@ -25,7 +25,7 @@ jobs:
           make --directory docs install
       - name: Build the docs
         run: |
-          make --directory docs dirhtml
+          make --directory docs build
       - name: Upload GitHub Pages artifact
         # https://github.com/actions/upload-pages-artifact
         uses: actions/upload-pages-artifact@v3
