@@ -8,17 +8,7 @@ Welcome to ws-scylla's documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Table of Contents
+   :titlesonly:
 
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
-.. code-block:: javascript
-   
-   console.log("Hello World")
+   single-cluster

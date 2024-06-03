@@ -17,7 +17,8 @@ author = 'Gabriel do Carmo Vieira'
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = []
+extensions = ['myst_parser']
+suppress_warnings = ["myst.header"]
 templates_path = ['_templates']
 exclude_patterns = []
 
