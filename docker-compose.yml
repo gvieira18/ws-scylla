@@ -1,13 +1,10 @@
 services:
   ws-scylla-1: &scylla-main
-    image: scylladb/scylla:5.4.6
+    image: scylladb/scylla:6.0
     container_name: ws-scylla-1
     command: ['--smp=1', '--memory=1GB', '--overprovisioned=1', '--developer-mode=1', '--seeds=ws-scylla-1']
-    environment: ['SCYLLA_JMX_ADDR=-ja 0.0.0.0', 'SCYLLA_JMX_REMOTE=-r']
     ports:
       - '9040:9042'
-    expose:
-      - '7199'
     networks:
       ws-scylla:
     volumes:
@@ -21,14 +18,10 @@ services:
   ws-scylla-2: &scylla-replica
     <<: *scylla-main
     container_name: ws-scylla-2
-    command: ['--smp=1', '--overprovisioned=1', '--developer-mode=1', '--seeds=ws-scylla-1']
     ports:
       - '9041:9042'
     volumes:
       - scylla-2:/var/lib/scylla
-    depends_on:
-      ws-scylla-1:
-        condition: service_healthy
   ws-scylla-3:
     <<: *scylla-replica
     container_name: ws-scylla-3
@@ -36,9 +29,6 @@ services:
       - '9042:9042'
     volumes:
       - scylla-3:/var/lib/scylla
-    depends_on:
-      ws-scylla-2:
-        condition: service_healthy
 volumes:
   scylla-1:
     name: scylla-1
