@@ -42,9 +42,6 @@ html_context = {
     "github_repo": "ws-scylla",
     "github_version": "develop/docs/source/"
 }
-html_css_files = [
-    'styles/custom.css'
-]
 favicons = {
     "rel": "icon",
     "href": "images/favicon.svg",
