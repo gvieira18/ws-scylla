@@ -1,5 +1,3 @@
-import sphinx_rtd_theme
-
 from datetime import date
 
 # Configuration file for the Sphinx documentation builder.
@@ -25,7 +23,21 @@ exclude_patterns = []
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = 'sphinx_rtd_theme'
-html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+html_theme = 'pydata_sphinx_theme'
 html_static_path = ['_static']
 html_baseurl = 'https://gvieira18.github.io/ws-scylla/'
+html_copy_source = False
+html_show_sourcelink = False
+html_theme_options = {
+    'use_edit_page_button': True,
+    'show_prev_next': False
+}
+html_context = {
+    "default_mode": "dark",
+    "github_user": "gvieira18",
+    "github_repo": "ws-scylla",
+    "github_version": "develop/docs/source/"
+}
+html_css_files = [
+    'styles/custom.css'
+]
