@@ -15,7 +15,10 @@ author = 'Gabriel do Carmo Vieira'
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ['myst_parser']
+extensions = [
+    'myst_parser',
+    'sphinx_favicon'
+]
 suppress_warnings = ["myst.header"]
 templates_path = ['_templates']
 exclude_patterns = []
@@ -41,3 +44,8 @@ html_context = {
 html_css_files = [
     'styles/custom.css'
 ]
+favicons = {
+    "rel": "icon",
+    "href": "images/favicon.svg",
+    "type": "image/svg+xml"
+}
