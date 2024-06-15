@@ -2,3 +2,4 @@ Sphinx==7.3.7
 myst-parser==3.0.1
 pydata_sphinx_theme==0.15.3
 sphinx-favicon==1.0.1
+sphinx-sitemap==2.6.0

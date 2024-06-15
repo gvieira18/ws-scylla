@@ -17,7 +17,8 @@ author = 'Gabriel do Carmo Vieira'
 
 extensions = [
     'myst_parser',
-    'sphinx_favicon'
+    'sphinx_favicon',
+    'sphinx_sitemap'
 ]
 suppress_warnings = ["myst.header"]
 templates_path = ['_templates']
@@ -49,3 +50,9 @@ favicons = {
     "href": "images/favicon.svg",
     "type": "image/svg+xml"
 }
+html_extra_path = ['robots.txt']
+sitemap_locales = [None]
+sitemap_excludes = [
+    "search/",
+    "genindex/",
+]
