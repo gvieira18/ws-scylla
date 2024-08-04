@@ -1,75 +1,90 @@
-# ws-scylla
-
-### Overview
+## Overview
 
 This project simplifies ScyllaDB cluster configuration with 3 nodes for local testing using Docker and Docker Compose. It facilitates easy deployment and testing of ScyllaDB, a highly scalable NoSQL database.
 
-### Prerequisites
+## Prerequisites
 
 Before you begin, make sure the following software is installed on your system:
 
 - [Docker](https://docs.docker.com/engine/install/ubuntu/)
 - [Docker Compose](https://docs.docker.com/compose/install/linux/)
 
-### Getting Started
+## Getting Started
 
-1. **Clone this repository:**
+### **Clone this repository**
 
-```bash
+```sh
 git clone https://github.com/gvieira18/ws-scylla.git
 ```
 
-2. **Configure ScyllaDB settings:**
+### **Configure ScyllaDB settings**
 
-   - Before starting the cluster, ensure the [aio-max-nr](https://www.kernel.org/doc/Documentation/sysctl/fs.txt) value is sufficient (e.g., `1048576` or more). Check and adjust the value with the following commands:
-     ```bash
-     cat /proc/sys/fs/aio-max-nr
-     ```
-     ```bash
-     echo fs.aio-max-nr=1048576 | sudo tee /etc/sysctl.d/41-aio_max_nr.conf && sudo sysctl --system
-     ```
-     > 📝 This command adds a file inside the `/etc/sysctl.d` folder for startup loading.
-   - [Optional] Modify the `docker-compose.yml` file to customize ScyllaDB settings, such as port mappings, volume mounts, and network configurations.
+Before starting the cluster, ensure the [fs.aio-max-nr](https://www.kernel.org/doc/Documentation/sysctl/fs.txt) value is sufficient (e.g. `1048576` or `2097152` or more).
 
-3. **Start the ScyllaDB container:**
+To check the actual value, use one of the following commands:
+
+```sh
+sysctl --all | grep --word-regexp -- 'aio-max-nr'
+```
+```sh
+sysctl fs.aio-max-nr
+```
+```sh
+cat /proc/sys/fs/aio-max-nr
+```
+
+If the value is lower than required, you can use one of these commands:
+
+```sh
+# Update config non-persistent
+sysctl --write fs.aio-max-nr=1048576
+```
+
+> [!WARNING]
+> This command adds a file to the `/etc/sysctl.d` folder to be loaded when the system boots.
+
+```sh
+# Update config persistent
+echo fs.aio-max-nr=1048576 | sudo tee /etc/sysctl.d/41-aio_max_nr.conf && sudo sysctl --load '/etc/sysctl.d/41-aio_max_nr.conf'
+```
+
+<details>
+  <summary><i>Optional</i></summary>
+
+  <p style="text-align: justify;">Modify the <code>docker-compose.yml</code> file to customize ScyllaDB settings, such as port mappings, volume mounts, and network configurations.</p>
+</details>
+
+### **Start the ScyllaDB container**
 
 Use the following command to pull the ScyllaDB Docker image (if not already downloaded) and start the container in the background:
 
-```bash
-docker compose up --detach # or docker compose up -d
+```sh
+docker compose up --detach # starts the cluster in the background
 ```
 
-### Maintenance
+## Usage
 
-#### Accessing the Database
+### Accessing the Database
 
-- **CQLSH (Cassandra Query Language Shell):**
-
-```bash
-docker compose exec -it ws-scylla-1 cqlsh
-# or
-docker compose exec -it ws-scylla-2 cqlsh
-# or
-docker compose exec -it ws-scylla-3 cqlsh
-```
+#### **CQLSH (Cassandra Query Language Shell)**
 
 CQLSH is the command-line interface for interacting with ScyllaDB using the Cassandra Query Language (CQL). It allows you to execute CQL queries and manage the database.
 
-- **Nodetool:**
-
-```bash
-docker compose exec -it ws-scylla-1 nodetool status
-# or
-docker compose exec -it ws-scylla-2 nodetool status
-# or
-docker compose exec -it ws-scylla-3 nodetool status
+```sh
+docker compose exec -it ws-scylla-1 cqlsh
 ```
+
+#### **Nodetool**
 
 Nodetool is a command-line utility for managing and monitoring ScyllaDB clusters. It provides various operations, such as checking the status of nodes, compaction, repair, and more.
 
-- **Inside the Docker Network:**
+```sh
+docker compose exec -it ws-scylla-1 nodetool status
+```
 
-The `docker-compose.yml` file defines a specific network (`ws-scylla`) for internal usage. Integration with other projects within different Docker Compose specifications is possible.
+#### **Inside the Docker Network**
+
+The `docker-compose.yml` file defines a specific network (`ws-scylla`) for internal usage. Integration with other projects within different Docker Compose specifications is possible setting on external.
 
 ```yml
 services:
@@ -90,6 +105,7 @@ After starting the custom service, it registers within the `ws-scylla` network. 
 | ws-scylla-3  | ws-scylla-3 | 9042  |
 
 ```js
+// Cassandra JS Driver
 const client = new cassandra.Client({
   contactPoints: ['ws-scylla-1:9042', 'ws-scylla-2:9042', 'ws-scylla-3:9042'],
   localDataCenter: 'datacenter1',
@@ -97,7 +113,7 @@ const client = new cassandra.Client({
 });
 ```
 
-- **Outside the Docker Network:**
+#### **Outside the Docker Network**
 
 The default `docker-compose.yml` file enables the following ports for external access to the DBMS/SGDB or directly to the database driver:
 
@@ -110,6 +126,7 @@ The default `docker-compose.yml` file enables the following ports for external a
 Using the same example from internal access:
 
 ```js
+// Cassandra JS Driver
 const client = new cassandra.Client({
   contactPoints: ['localhost:9040', 'localhost:9041', 'localhost:9042'],
   localDataCenter: 'datacenter1',
@@ -117,34 +134,34 @@ const client = new cassandra.Client({
 });
 ```
 
-Access via Datagrip, which belongs to IntelliJ, follows the JDBC standard. You can build the JDBC URL as follows:
+When accessing via [**Datagrip**](https://www.jetbrains.com/pt-br/datagrip/), the JDBC standard is followed. You can build the JDBC URL as follows:
 
 ```properties
 URL="jdbc:cassandra://localhost:9040,localhost:9041,localhost:9042/system"
 ```
 
-#### Stop and Remove Cluster/Container
+### Stop and Remove Cluster/Container
 
-- **Stop the Cluster:**
+#### **Stop the Cluster**
 
-```bash
+```sh
 docker compose stop
 ```
 
-- **Stop and Remove Containers:**
+#### **Stop and Remove Containers**
 
-```bash
+```sh
 docker compose down
 ```
 
 > [!CAUTION]
 > Removing the volume also means removing any information stored in the database, so proceed with caution and make a backup if necessary.
 
-```bash
+```sh
 docker compose down --volumes # or docker compose down -v
 ```
 
-### References
+## References
 
 - [ScyllaDB - DockerHub](https://hub.docker.com/r/scylladb/scylla)
 - [ScyllaDB - University](https://university.scylladb.com/courses/scylla-essentials-overview/lessons/high-availability/topic/consistency-level-demo-part-1)
@@ -153,6 +170,6 @@ docker compose down --volumes # or docker compose down -v
 - [fee-mendes/workshop-demo](https://github.com/fee-mendes/workshop-demo)
 - [tzach/docker-compose.yml](https://gist.github.com/tzach/4d2c2485945465459e3c74cc5d42d949)
 
-### License
+## License
 
 This project is licensed under the [MIT License](LICENSE).
