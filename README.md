@@ -9,6 +9,9 @@ Before you begin, make sure the following software is installed on your system:
 - [Docker](https://docs.docker.com/engine/install/ubuntu/)
 - [Docker Compose](https://docs.docker.com/compose/install/linux/)
 
+> [!NOTE]
+> The Docker's commands listed below consider when you use its Docker V2
+
 ## Getting Started
 
 ### **Clone this repository**
@@ -21,7 +24,13 @@ git clone https://github.com/gvieira18/ws-scylla.git
 
 Before starting the cluster, ensure the [fs.aio-max-nr](https://www.kernel.org/doc/Documentation/sysctl/fs.txt) value is sufficient (e.g. `1048576` or `2097152` or more).
 
-To check the actual value, use one of the following commands:
+You can use the Makefile setup command to configure the `fs.aio-max-nr` value. It will set the value to `1048576`, which is the minimum recommended for clusters.
+
+```sh
+make setup
+```
+
+If you prefer to configure it manually, run one of the following commands to check the current value:
 
 ```sh
 sysctl --all | grep --word-regexp -- 'aio-max-nr'
