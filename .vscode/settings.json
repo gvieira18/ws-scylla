@@ -1,0 +1,8 @@
+{
+  "files.associations": {
+    "Makefile.setup": "makefile",
+    "Makefile.singlenode": "makefile",
+    "network.compose.yml": "dockercompose",
+    "single-node.compose.yml": "dockercompose"
+  }
+}
