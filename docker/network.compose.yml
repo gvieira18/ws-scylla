@@ -1,0 +1,10 @@
+networks:
+  scylla-dc:
+    name: scylla-dc
+    driver: bridge
+    ipam:
+      config:
+        - gateway: 10.9.8.1
+          subnet: 10.9.8.0/24
+    driver_opts:
+      com.docker.network.bridge.name: scylla-dc
