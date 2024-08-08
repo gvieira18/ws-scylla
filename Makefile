@@ -10,6 +10,7 @@ include makefiles/Makefile.singlenode
 .PHONY: help
 help: ## Show the help commands
 	@echo "Available commands:"
-	@grep -E '^[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
-	awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-35s\033[0m %s\n", $$1, $$2}' | \
+	@grep -E '^[^[:space:]]+:[^:]*?## .*$$' $(MAKEFILE_LIST) | \
+	sed -e 's/^[^:]*://g' | \
+	awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-30s\033[0m %s\n", $$1, $$2}' | \
 	sort
