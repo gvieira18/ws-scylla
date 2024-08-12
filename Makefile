@@ -4,14 +4,15 @@ ifndef DOCKER_COMMAND
 $(error "Cannot find docker")
 endif
 
-include makefiles/Makefile.setup
-include makefiles/Makefile.node
-include makefiles/Makefile.docker
+NODE ?= scylla-1
+
+include makefiles/setup.mk
+include makefiles/docker.mk
+include makefiles/node.mk
 
 .PHONY: help
 help: ## Show the help commands
 	@echo "Available commands:"
 	@grep -E '^[^[:space:]]+:[^:]*?## .*$$' $(MAKEFILE_LIST) | \
 	sed -e 's/^[^:]*://g' | \
-	awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-30s\033[0m %s\n", $$1, $$2}' | \
-	sort
+	awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-30s\033[0m %s\n", $$1, $$2}'

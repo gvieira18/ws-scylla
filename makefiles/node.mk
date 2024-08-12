@@ -1,7 +1,5 @@
 COMPOSE_SINGLE_NODE_FLAGS = --file docker/network.compose.yml --file docker/node.compose.yml
 
-NODE_1 = scylla-1
-
 .PHONY: node-up
 node-up: ## Starts a node ScyllaDB
 	@$(DOCKER_COMMAND) compose $(COMPOSE_SINGLE_NODE_FLAGS) up --detach
@@ -12,8 +10,8 @@ node-down: ## Remove the entire container with volumes from node
 
 .PHONY: node-nt-status
 node-nt-status: ## Shows node nodetool status
-	@$(DOCKER_COMMAND) compose $(COMPOSE_SINGLE_NODE_FLAGS) exec -it $(NODE_1) nodetool status
+	@$(DOCKER_COMMAND) compose $(COMPOSE_SINGLE_NODE_FLAGS) exec -it $(NODE) nodetool status
 
 .PHONY: node-cqlsh
 node-cqlsh: ## Enters node CQLSH
-	@$(DOCKER_COMMAND) compose $(COMPOSE_SINGLE_NODE_FLAGS) exec -it $(NODE_1) cqlsh
+	@$(DOCKER_COMMAND) compose $(COMPOSE_SINGLE_NODE_FLAGS) exec -it $(NODE) cqlsh
