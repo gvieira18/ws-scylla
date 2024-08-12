@@ -5,7 +5,8 @@ $(error "Cannot find docker")
 endif
 
 include makefiles/Makefile.setup
-include makefiles/Makefile.singlenode
+include makefiles/Makefile.node
+include makefiles/Makefile.docker
 
 .PHONY: help
 help: ## Show the help commands

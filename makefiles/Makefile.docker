@@ -1,0 +1,7 @@
+.PHONY: stats
+stats: ## Enter on docker compose stats
+	@$(DOCKER_COMMAND) compose stats
+
+.PHONY: status
+status: ## Show docker status on format "ID NAME STATE IMAGE STATUS PORTS"
+	@$(DOCKER_COMMAND) ps --format='table {{.ID}}\t{{.Names}}\t{{.State}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}'
