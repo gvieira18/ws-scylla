@@ -10,7 +10,7 @@ cluster-down: ## Remove the entire cluster with volumes from node
 
 .PHONY: cluster-nt-status
 cluster-nt-status: ## Shows node nodetool status
-	$(DOCKER_COMMAND) compose $(COMPOSE_CLUSTER_NODE_FLAGS) exec -it $(NODE) nodetool status
+	$(DOCKER_COMMAND) compose $(COMPOSE_CLUSTER_NODE_FLAGS) exec $(NODE) nodetool status
 
 .PHONY: cluster-cqlsh
 cluster-cqlsh: ## Enters node CQLSH
