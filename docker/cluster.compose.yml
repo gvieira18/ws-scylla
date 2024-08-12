@@ -1,0 +1,51 @@
+services:
+  scylla-1: &scylla-main
+    image: scylladb/scylla:6.0
+    container_name: scylla-1
+    command:
+      - --smp=1
+      - --memory=2GB
+      - --overprovisioned=1
+      - --developer-mode=1
+      - --seeds=scylla-1
+    ports:
+      - 9042:9042
+    networks:
+      scylla-dc: null
+    volumes:
+      - scylla-1:/var/lib/scylla
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - cqlsh -e "SHOW VERSION" || exit 1
+      interval: 15s
+      timeout: 30s
+      retries: 15
+      start_period: 30s
+  scylla-2:
+    <<: *scylla-main
+    container_name: scylla-2
+    ports:
+      - "9043:9042"
+    volumes:
+      - scylla-2:/var/lib/scylla
+    depends_on:
+      scylla-1:
+        condition: service_healthy
+  scylla-3:
+    <<: *scylla-main
+    container_name: scylla-3
+    ports:
+      - "9044:9042"
+    volumes:
+      - scylla-3:/var/lib/scylla
+    depends_on:
+      scylla-1:
+        condition: service_healthy
+volumes:
+  scylla-1:
+    name: scylla-1
+  scylla-2:
+    name: scylla-2
+  scylla-3:
+    name: scylla-3

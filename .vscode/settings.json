@@ -3,7 +3,9 @@
     "Makefile.setup": "makefile",
     "Makefile.node": "makefile",
     "Makefile.docker": "makefile",
+    "Makefile.cluster": "makefile",
     "network.compose.yml": "dockercompose",
-    "node.compose.yml": "dockercompose"
+    "node.compose.yml": "dockercompose",
+    "cluster.compose.yml": "dockercompose"
   }
 }

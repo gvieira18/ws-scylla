@@ -9,6 +9,7 @@ NODE ?= scylla-1
 include makefiles/setup.mk
 include makefiles/docker.mk
 include makefiles/node.mk
+include makefiles/cluster.mk
 
 .PHONY: help
 help: ## Show the help commands
