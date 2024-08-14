@@ -1,4 +1,4 @@
-COMPOSE_CLUSTER_NODE_FLAGS = --file docker/network.compose.yml --file docker/cluster.compose.yml
+override COMPOSE_CLUSTER_NODE_FLAGS = --file docker/network.compose.yml --file docker/cluster.compose.yml
 
 .PHONY: cluster-up
 cluster-up: ## Starts a cluster ScyllaDB
@@ -10,7 +10,7 @@ cluster-down: ## Remove the entire cluster with volumes from node
 
 .PHONY: cluster-nt-status
 cluster-nt-status: ## Shows node nodetool status
-	$(DOCKER_COMMAND) compose $(COMPOSE_CLUSTER_NODE_FLAGS) exec $(NODE) nodetool status
+	@$(DOCKER_COMMAND) compose $(COMPOSE_CLUSTER_NODE_FLAGS) exec $(NODE) nodetool status
 
 .PHONY: cluster-cqlsh
 cluster-cqlsh: ## Enters node CQLSH

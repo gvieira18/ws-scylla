@@ -1,4 +1,4 @@
-COMPOSE_SINGLE_NODE_FLAGS = --file docker/network.compose.yml --file docker/node.compose.yml
+override COMPOSE_SINGLE_NODE_FLAGS = --file docker/network.compose.yml --file docker/node.compose.yml
 
 .PHONY: node-up
 node-up: ## Starts a node ScyllaDB
