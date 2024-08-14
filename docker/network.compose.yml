@@ -2,6 +2,7 @@ networks:
   scylla-dc:
     name: scylla-dc
     driver: bridge
+    enable_ipv6: false
     ipam:
       config:
         - gateway: 10.9.8.1

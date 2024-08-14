@@ -1,9 +1,9 @@
 services:
   scylla-1:
-    image: scylladb/scylla:6.0
+    image: scylladb/scylla:6.1
     container_name: scylla-1
     command:
-      - --smp=1
+      - --smp=2
       - --memory=2GB
       - --overprovisioned=1
       - --developer-mode=1
@@ -11,7 +11,8 @@ services:
     ports:
       - 9042:9042
     networks:
-      scylla-dc: null
+      scylla-dc:
+        ipv4_address: 10.9.8.2
     volumes:
       - scylla-1:/var/lib/scylla
     healthcheck:
