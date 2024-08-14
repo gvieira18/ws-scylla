@@ -6,6 +6,8 @@
     "Makefile.cluster": "makefile",
     "network.compose.yml": "dockercompose",
     "node.compose.yml": "dockercompose",
-    "cluster.compose.yml": "dockercompose"
+    "cluster.compose.yml": "dockercompose",
+    "dc1.compose.yml": "dockercompose",
+    "dc2.compose.yml": "dockercompose",
   }
 }
