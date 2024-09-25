@@ -17,3 +17,7 @@ dc-nt-status: ## Check the nodetool status of the specified node (default: scyll
 .PHONY: dc-cqlsh
 dc-cqlsh: ## Start a cqlsh session on the specified node (default: scylla-dc1-n1)
 	@$(DOCKER_COMMAND) compose $(COMPOSE_DC_NODE_FLAGS) exec -it $(DC_NODE) cqlsh
+
+.PHONY: dc-logs
+dc-logs: ## Shows DC logs
+	@$(DOCKER_COMMAND) compose $(COMPOSE_DC_NODE_FLAGS) logs --follow

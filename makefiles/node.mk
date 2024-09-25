@@ -15,3 +15,7 @@ node-nt-status: ## Shows node nodetool status
 .PHONY: node-cqlsh
 node-cqlsh: ## Enters node CQLSH
 	@$(DOCKER_COMMAND) compose $(COMPOSE_SINGLE_NODE_FLAGS) exec -it $(NODE) cqlsh
+
+.PHONY: node-logs
+node-logs: ## Shows node logs
+	@$(DOCKER_COMMAND) compose $(COMPOSE_SINGLE_NODE_FLAGS) logs --follow
