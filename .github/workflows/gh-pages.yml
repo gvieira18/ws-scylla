@@ -5,21 +5,23 @@ on:
     branches:
       - develop
     paths:
-      - 'docs/**'
+      - "docs/**"
   workflow_dispatch:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    name: Build Project Documentation
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout the repository
         # https://github.com/actions/checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
       - name: Set up Python
         # https://github.com/actions/setup-python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5.2.0
         with:
-          python-version: '3.10'
+          python-version: "3.10"
+          cache: "pip"
       - name: Install dependencies
         run: |
           make --directory docs install
@@ -28,22 +30,23 @@ jobs:
           make --directory docs build
       - name: Upload GitHub Pages artifact
         # https://github.com/actions/upload-pages-artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # 3.0.1
         with:
           name: github-pages
           path: docs/build/dirhtml/
-          retention-days: 1
+          retention-days: 3
   deploy:
-    needs: build
+    name: Deploy to GitHub Pages
+    needs: [build]
     permissions:
       pages: write
       id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - name: Deploy to GitHub Pages
+      - name: Deploy uploaded artifact
         id: deployment
         # https://github.com/actions/deploy-pages
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4.0.5
