@@ -1,6 +1,6 @@
 services:
   scylla-1:
-    image: scylladb/scylla:6.2
+    image: scylladb/scylla:2025.3
     container_name: scylla-1
     command:
       - --smp=2
